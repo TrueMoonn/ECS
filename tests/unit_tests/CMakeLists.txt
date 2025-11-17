@@ -1,4 +1,4 @@
-project(unit_tests)
+project(ECS_unit_tests)
 
 include(FetchContent)
 

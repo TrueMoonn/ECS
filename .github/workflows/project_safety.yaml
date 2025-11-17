@@ -1,0 +1,40 @@
+name: Assurance Project Safety
+
+on:
+  pull_request:
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Project
+        run: |
+          mkdir ./build/ && cd ./build/
+          cmake .. -DENABLE_TESTS=ON -DENABLE_COVERAGE=ON
+          cmake --build .
+
+      - name: Run Tests
+        working-directory: ./build/
+        run: ctest --output-on-failure
+
+  coding-style:
+    name: Coding Style Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install Cpplint
+        run: pip install cpplint
+
+      - name: Run Coding Style
+        run: cpplint --recursive 

@@ -8,18 +8,18 @@ set(ECS_SRC_DIR "${PROJECT_SOURCE_DIR}/src/")
 set(ECS_HDR_DIR "${PROJECT_SOURCE_DIR}/include/")
 
 ########## OPTIONS ##########
-option(ENABLE_TESTS "Build tests along with the library" OFF)
-option(ENABLE_COVERAGE "Enable coverage reporting" OFF)
+option(ENABLE_ECS_TESTS "Build tests along with the library" OFF)
+option(ENABLE_ECS_COVERAGE "Enable coverage reporting" OFF)
 
 ########## TESTING ##########
-if(ENABLE_COVERAGE)
+if(ENABLE_ECS_COVERAGE)
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fprofile-arcs -ftest-coverage")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
     endif()
 endif()
 
-if (ENABLE_TESTS)
+if (ENABLE_ECS_TESTS)
   enable_testing()
   add_subdirectory(tests/unit_tests)
 endif ()
