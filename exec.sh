@@ -61,6 +61,30 @@ then
     pip install cpplint
     cpplint --recursive .
     echo "------------END------------"
+elif [[ $1 == "--help" || $1 == "-h" ]]
+then
+    echo "To use this executer you must use a flag:
+    --build, -b             Build the program with CMake
+    --clear, -c             Clear files created by the compilation
+    --style-check, -cs      Check for coding style using cpplint
+    --help, -h              More information about this script
+
+    << This section delete the old files created by the compilation >>
+    --re-build, -rb         Build the program with CMake
+    --build-test, -t        Launch unit tests with coverage using GTest
+    --debug-build, -d       Build the program with debug and verbose
+"
 else
-    echo "Missing flag"
+    echo "error: missing or wrong flag
+To use this executer you must use a flag:
+    --build, -b             Build the program with CMake
+    --clear, -c             Clear files created by the compilation
+    --style-check, -cs      Check for coding style using cpplint
+    --help, -h              More information about this script
+
+    << This section delete the old files created by the compilation >>
+    --re-build, -rb         Build the program with CMake
+    --build-test, -t        Launch unit tests with coverage using GTest
+    --debug-build, -d       Build the program with debug and verbose
+"
 fi
