@@ -37,4 +37,4 @@ jobs:
         run: pip install cpplint
 
       - name: Run Coding Style
-        run: cpplint --recursive 
+        run: cpplint --recursive .
