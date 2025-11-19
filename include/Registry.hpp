@@ -16,6 +16,7 @@
     #include <vector>
     #include <utility>
     #include <iostream>
+    // #include <variant>
 
     #include "SparseArray.hpp"
     #include "Entity.hpp"
@@ -23,6 +24,12 @@
 namespace ECS {
 
 class Registry {
+//   template <typename Component>
+//   using array_t = std::variant<
+//     SparseArray<Component>,
+//     std::unordered_map<ECS::Entity, Component>
+//   >;
+
  public:
     template <typename Component>
     SparseArray<Component>& registerComponent() {
