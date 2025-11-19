@@ -148,7 +148,7 @@ class IndexedZipper {
             return prev;
         }
         auto operator*() {
-            return std::tuple_cat(std::make_tuple(_it.get_index()), *_it);;
+            return std::tuple_cat(std::make_tuple(_it.get_index()), *_it);
         }
         bool operator==(Iterator const& other) const {
             return _it == other._it;
