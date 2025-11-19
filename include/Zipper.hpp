@@ -20,7 +20,6 @@ namespace ECS {
 template <class... Containers>
 class Zipper {
  public:
-
     template <class... Cs>
     class ZipperIterator {
      public:
@@ -63,11 +62,13 @@ class Zipper {
             return to_value(_seq);
         }
 
-        friend bool operator==(ZipperIterator const &lhs, ZipperIterator const& rhs) {
+        friend bool operator==(ZipperIterator const &lhs,
+            ZipperIterator const& rhs) {
             return lhs._idx == rhs._idx;
         }
 
-        friend bool operator!=(ZipperIterator const &lhs, ZipperIterator const& rhs) {
+        friend bool operator!=(ZipperIterator const &lhs,
+            ZipperIterator const& rhs) {
             return !(lhs._idx == rhs._idx);
         }
 
@@ -131,48 +132,45 @@ class IndexedZipper {
     class Iterator {
      public:
         using inner_iterator = typename Zipper<Containers...>::iterator;
-        using value_type = std::tuple<size_t, typename inner_iterator::value_type>;
+        using value_type = std::tuple<size_t,
+            typename inner_iterator::value_type>;
         using reference = value_type;
-        
-        Iterator(inner_iterator it) : _it(it) {}
-        
+
+        explicit Iterator(inner_iterator it) : _it(it) {}
+
         Iterator& operator++() {
             ++_it;
             return *this;
         }
-        
         Iterator operator++(int) {
             auto prev = *this;
             ++(*this);
             return prev;
         }
-        
         auto operator*() {
             return std::tuple_cat(std::make_tuple(_it.get_index()), *_it);;
         }
-        
         bool operator==(Iterator const& other) const {
             return _it == other._it;
         }
-        
         bool operator!=(Iterator const& other) const {
             return !(*this == other);
         }
-        
+
      private:
         inner_iterator _it;
     };
-    
+
     explicit IndexedZipper(Containers&... cs) : _zipper(cs...) {}
-    
+
     Iterator begin() {
         return Iterator(_zipper.begin());
     }
-    
+
     Iterator end() {
         return Iterator(_zipper.end());
     }
-    
+
  private:
     Zipper<Containers...> _zipper;
 };
