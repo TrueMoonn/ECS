@@ -107,3 +107,20 @@ TEST(zipper, hard_indexed_zipper) {
     }
     EXPECT_EQ(nbi, 3);
 }
+
+TEST(zipper, update_indexed_zipper) {
+    ECS::Registry reg = simple_registry_setup();
+    int index_found = 0;
+
+    auto& ints = reg.getComponents<int>();
+    auto& chars = reg.getComponents<char>();
+    for (auto &&[i, in, ch] : ECS::IndexedZipper(ints, chars)) {
+        in.value() += 1;
+        ch.value() += 1;
+        index_found = i;
+    }
+    auto& other_ints = reg.getComponents<int>();
+    auto& other_chars = reg.getComponents<char>();
+    EXPECT_EQ(other_ints[index_found].value(), index_found + 1);
+    EXPECT_EQ(other_chars[index_found].value(), index_found + '0' + 1);
+}
