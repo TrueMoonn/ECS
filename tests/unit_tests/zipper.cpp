@@ -7,8 +7,8 @@
 
 #include <gtest/gtest.h>
 
-#include "Zipper.hpp"
-#include "Registry.hpp"
+#include "ECS/Zipper.hpp"
+#include "ECS/Registry.hpp"
 
 static ECS::Registry simple_registry_setup() {
     ECS::Registry reg;

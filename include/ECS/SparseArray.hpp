@@ -6,8 +6,7 @@
 ** Copyright [2025] <DeepestDungeonGroup>
 */
 
-#ifndef INCLUDE_SPARSEARRAY_HPP_
-    #define INCLUDE_SPARSEARRAY_HPP_
+#pragma once
 
     #include <iostream>
     #include <utility>
@@ -112,5 +111,3 @@ class SparseArray {
 };
 
 }  // namespace ECS
-
-#endif  // INCLUDE_SPARSEARRAY_HPP_

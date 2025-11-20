@@ -6,8 +6,7 @@
 ** Copyright [2025] <DeepestDungeonGroup>
 */
 
-#ifndef INCLUDE_REGISTRY_HPP_
-    #define INCLUDE_REGISTRY_HPP_
+#pragma once
 
     #include <unordered_map>
     #include <typeindex>
@@ -17,8 +16,8 @@
     #include <utility>
     #include <iostream>
 
-    #include "SparseArray.hpp"
-    #include "Entity.hpp"
+    #include "ECS/SparseArray.hpp"
+    #include "ECS/Entity.hpp"
 
 namespace ECS {
 
@@ -99,5 +98,3 @@ class Registry {
 };
 
 }  // namespace ECS
-
-#endif  // INCLUDE_REGISTRY_HPP_
