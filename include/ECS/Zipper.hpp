@@ -6,8 +6,7 @@
 ** Copyright [2025] <DeepestDungeonGroup>
 */
 
-#ifndef INCLUDE_ZIPPER_HPP_
-    #define INCLUDE_ZIPPER_HPP_
+#pragma once
 
     #include <tuple>
     #include <utility>
@@ -176,5 +175,3 @@ class IndexedZipper {
 };
 
 }  // namespace ECS
-
-#endif  // INCLUDE_ZIPPER_HPP_

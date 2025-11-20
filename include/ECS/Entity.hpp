@@ -6,8 +6,7 @@
 ** Copyright [2025] <DeepestDungeonGroup>
 */
 
-#ifndef INCLUDE_ENTITY_HPP_
-    #define INCLUDE_ENTITY_HPP_
+#pragma once
 
     #include <cuchar>
 
@@ -23,5 +22,3 @@ namespace ECS {
 typedef size_t Entity;
 
 }  // namespace ECS
-
-#endif  // INCLUDE_ENTITY_HPP_
