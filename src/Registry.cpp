@@ -6,7 +6,7 @@
 ** Copyright [2025] <DeepestDungeonGroup>
 */
 
-#include "Registry.hpp"
+#include "ECS/Registry.hpp"
 
 namespace ECS {
 

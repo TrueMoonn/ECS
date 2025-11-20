@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 
-#include "Registry.hpp"
+#include "ECS/Registry.hpp"
 
 void test_system_add_one(ECS::Registry& reg) {
     auto &simple_int = reg.getComponents<int>();
