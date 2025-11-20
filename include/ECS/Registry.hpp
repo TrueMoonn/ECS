@@ -17,8 +17,8 @@
     #include <utility>
     #include <iostream>
 
-    #include "SparseArray.hpp"
-    #include "Entity.hpp"
+    #include "ECS/SparseArray.hpp"
+    #include "ECS/Entity.hpp"
 
 namespace ECS {
 

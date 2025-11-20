@@ -7,7 +7,7 @@
 */
 
 #include <gtest/gtest.h>
-#include "SparseArray.hpp"
+#include "ECS/SparseArray.hpp"
 
 TEST(sparse_array, init) {
     ECS::SparseArray<int> arr;
