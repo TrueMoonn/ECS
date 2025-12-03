@@ -19,6 +19,8 @@
     #include "ECS/SparseArray.hpp"
     #include "ECS/Entity.hpp"
 
+    #define V(val) val.value()
+
 namespace ECS {
 
 class Registry {
