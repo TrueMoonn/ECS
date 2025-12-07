@@ -26,6 +26,16 @@ TEST(registry, register_component) {
     EXPECT_EQ(typeid(ECS::SparseArray<int>), typeid(result));
 }
 
+TEST(registry, create_component) {
+    ECS::Registry reg = {};
+    auto result = reg.registerComponent<int>();
+
+    auto &cmpts = reg.getComponents<int>();
+    reg.createComponent<int>(0, 1);
+    EXPECT_TRUE(cmpts[0].has_value());
+    EXPECT_EQ(cmpts[0].value(), 1);
+}
+
 TEST(registry, access_component) {
     ECS::Registry reg = {};
 
