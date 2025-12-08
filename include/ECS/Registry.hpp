@@ -58,6 +58,18 @@ class Registry {
 
     void killEntity(const Entity& e);
 
+    template <typename Component, typename... Args>
+    void createComponent(const Entity& e, Args&&... args) {
+        try {
+            std::any_cast<SparseArray<Component>&>(
+                _component_array.at(
+                    std::type_index(typeid(Component)))).emplace_at(
+                    e, std::forward<Args>(args)...);
+        } catch (const std::bad_any_cast& e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
+
     template <typename Component>
     void addComponent(const Entity& e, const Component& c) {
         try {

@@ -22,6 +22,15 @@ TEST(sparse_array, copy_init) {
     EXPECT_EQ(arr[0].value(), arr2[0]);
 }
 
+TEST(sparse_array, emplace_data) {
+    ECS::SparseArray<int> arr(3);
+
+    arr.emplace_at(1, 1);
+    EXPECT_EQ(arr[1].value(), 1);
+    arr.emplace_at(2, 2);
+    EXPECT_EQ(arr[2].value(), 2);
+}
+
 TEST(sparse_array, creation_insert_data_space) {
     ECS::SparseArray<int> arr(3);
     int data = 1;
