@@ -25,7 +25,7 @@ class Zipper {
         template <class Container>
         using iterator_t = typename Container::iterator;
         template <class Container>
-        using it_reference_t = typename iterator_t<Container>::reference;
+        using it_reference_t = typename iterator_t<Container>::value_type::value_type&;
 
         using value_type = std::tuple<it_reference_t<Cs>...>;
         using reference = value_type;
@@ -91,7 +91,7 @@ class Zipper {
 
         template <size_t... Is>
         value_type to_value(std::index_sequence<Is...>) {
-            return std::tie(*std::get<Is>(_current)...);
+            return std::tie((**std::get<Is>(_current))...);
         }
 
         iterator_tuple _current;

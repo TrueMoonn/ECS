@@ -1,5 +1,6 @@
-# Vscode
+# IDE
 .vscode/
+compile_flags.txt
 
 # Valgrind
 vgcore.*
