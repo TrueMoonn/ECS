@@ -25,7 +25,8 @@ class Zipper {
         template <class Container>
         using iterator_t = typename Container::iterator;
         template <class Container>
-        using it_reference_t = typename iterator_t<Container>::value_type::value_type&;
+        using it_reference_t =
+            typename iterator_t<Container>::value_type::value_type&;
 
         using value_type = std::tuple<it_reference_t<Cs>...>;
         using reference = value_type;
