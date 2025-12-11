@@ -38,7 +38,7 @@ class Zipper {
 
         ZipperIterator(iterator_tuple current, size_t max, size_t idx = 0)
             : _current(current), _max(max), _idx(idx) {
-            if (!all_set(_seq) && _idx < _max) {
+            if (_idx < _max && !all_set(_seq)) {
                 incr_all(_seq);
             }
         }
