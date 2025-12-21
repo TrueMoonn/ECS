@@ -8,7 +8,6 @@
 #pragma once
 
     #include <utility>
-    #include <iostream>
     #include <vector>
 
     #include "ECS/Entity.hpp"
@@ -23,6 +22,8 @@ namespace ECS {
 template <typename Component>
 class DenseSparseArray {
  public:
+    using value_type = Component;
+
     DenseSparseArray() = default;
 
     template <typename ...Args>
