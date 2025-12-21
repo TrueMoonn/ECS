@@ -16,36 +16,56 @@
     #include <utility>
     #include <iostream>
 
-    #include "ECS/SparseArray.hpp"
+    #include "ECS/DenseSA.hpp"
     #include "ECS/Entity.hpp"
+
+    #define GET_DENSE_REF(m) std::any_cast<DenseSparseArray<Component>&>(\
+        m.at(std::type_index(typeid(Component))))
 
 namespace ECS {
 
 class Registry {
  public:
     template <typename Component>
-    SparseArray<Component>& registerComponent() {
-        _component_array.insert_or_assign(
-            std::type_index(typeid(Component)), SparseArray<Component>());
-        _remover.push_back([](Registry& reg, const Entity& e) {
-            auto &cmpts = reg.getComponents<Component>();
-            if (e < cmpts.size() && cmpts[e].has_value())
-                cmpts.erase(e);
-        });
-        return std::any_cast<SparseArray<Component>&>(
-            _component_array.at(std::type_index(typeid(Component))));
+    DenseSparseArray<Component>& registerComponent() {
+        _components.insert_or_assign(
+            std::type_index(typeid(Component)), DenseSparseArray<Component>());
+        // _remover.push_back([](Registry& reg, Entity e) {
+        //     auto &cmpts = reg.getComponents<Component>();
+        //     if (e < cmpts.size() && cmpts[e].has_value())
+        //         cmpts.erase(e);
+        // });
+        return GET_DENSE_REF(_components);
     }
 
     template <typename Component>
-    SparseArray<Component>& getComponents() {
-        return std::any_cast<SparseArray<Component>&>(
-            _component_array.at(std::type_index(typeid(Component))));
+    DenseSparseArray<Component>& getComponents() {
+        return GET_DENSE_REF(_components);
     }
 
     template <typename Component>
-    SparseArray<Component> const & getComponents() const {
-        return std::any_cast<SparseArray<Component>&>(
-            _component_array.at(std::type_index(typeid(Component))));
+    std::vector<SparseArray<std::size_t>>& getSparComponents() {
+        return GET_DENSE_REF(_components).getSparComponents();
+    }
+
+    template <typename Component>
+    const std::vector<SparseArray<std::size_t>>& getSparComponents() const {
+        return GET_DENSE_REF(_components).getSparComponents();
+    }
+
+    template <typename Component>
+    Component& getComponent(std::size_t index) {
+        return GET_DENSE_REF(_components).getComponent(index);
+    }
+
+    template <typename Component>
+    const Component& getComponent(std::size_t index) const {
+        return GET_DENSE_REF(_components).getComponent(index);
+    }
+
+    template <typename Component>
+    DenseSparseArray<Component> const & getComponents() const {
+        return GET_DENSE_REF(_components);
     }
 
     void addSystem(const std::function<void(Registry&)>& f) {
@@ -54,56 +74,48 @@ class Registry {
 
     void runSystems(void);
 
-    void killEntity(const Entity& e);
+    void killEntity(Entity e);
 
     template <typename Component, typename... Args>
-    void createComponent(const Entity& e, Args&&... args) {
+    void createComponent(Entity e, Args&&... args) {
         try {
-            std::any_cast<SparseArray<Component>&>(
-                _component_array.at(
-                    std::type_index(typeid(Component)))).emplace_at(
-                    e, std::forward<Args>(args)...);
+            GET_DENSE_REF(_components).createComponent(
+                e, std::forward<Args>(args)...);
         } catch (const std::bad_any_cast& e) {
             std::cout << e.what() << std::endl;
         }
     }
 
     template <typename Component>
-    void addComponent(const Entity& e, const Component& c) {
+    void addComponent(Entity e, const Component& c) {
         try {
-            std::any_cast<SparseArray<Component>&>(
-                _component_array.at(
-                    std::type_index(typeid(Component)))).insert_at(e, c);
+            GET_DENSE_REF(_components).addComponent(e, c);
         } catch (const std::bad_any_cast& e) {
             std::cout << e.what() << std::endl;
         }
     }
 
     template <typename Component>
-    void addComponent(const Entity& e, Component&& c) {
+    void addComponent(Entity e, Component&& c) {
         try {
-            std::any_cast<SparseArray<Component>&>(
-                _component_array.at(
-                    std::type_index(typeid(Component)))).insert_at(
-                        e, std::forward<Component>(c));
+            GET_DENSE_REF(_components).addComponent(
+                e, std::forward<Component>(c));
         } catch (const std::bad_any_cast& e) {
             std::cout << e.what() << std::endl;
         }
     }
 
     template <typename Component>
-    void removeComponent(const Entity& e) {
+    void removeComponent(Entity e) {
         try {
-            std::any_cast<SparseArray<Component>&>(
-                _component_array.at(
-                    std::type_index(typeid(Component)))).erase(e);
+            GET_DENSE_REF(_components).removeComponent(e);
         } catch (const std::bad_any_cast& e) {
             std::cout << e.what() << std::endl;
         }
     }
 
  private:
-    std::unordered_map<std::type_index, std::any> _component_array;
+    std::unordered_map<std::type_index, std::any> _components;
     std::vector<std::function<void(Registry&, const Entity&)>> _remover;
 
     std::vector<std::function<void(Registry&)>> _systems;

@@ -8,7 +8,6 @@
 
 #pragma once
 
-    #include <iostream>
     #include <utility>
     #include <optional>
     #include <vector>
@@ -18,14 +17,14 @@ namespace ECS {
 
 /**
  * @brief Sparse Array implementation for the ECS
- * 
+ *
  * Useful to manage a large amount of components associated with indexs as
  * entities in an Entity Component System type of architecture.
  * This class inherite from the std::vector and use std::optional type as
  * variables wich makes it easier to access
- * 
+ *
  * std::vector<std::optional<Component>>
- * 
+ *
  * @tparam Component Is the type of the component you are storing
  */
 template<class Component>
@@ -99,7 +98,7 @@ class SparseArray {
         if (pos >= _data.size()) {
             _data.resize(pos + 1);
         }
-        _data[pos].emplace(std::move(cmpt));
+        _data[pos].emplace(std::forward<Component>(cmpt));
         return _data[pos];
     }
 
