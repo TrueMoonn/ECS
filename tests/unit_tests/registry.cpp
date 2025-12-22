@@ -76,9 +76,8 @@ TEST(registry, access_component) {
 
 TEST(registry, bad_access_component) {
     ECS::Registry reg = {};
-    auto& integers = reg.registerComponent<int>();
 
-    EXPECT_THROW(reg.getComponents<char>(), std::out_of_range);
+    EXPECT_THROW(reg.getComponents<int>(), std::out_of_range);
 }
 
 TEST(registry, remove_entity_components) {

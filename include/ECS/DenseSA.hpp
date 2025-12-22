@@ -48,7 +48,7 @@ class DenseSparseArray {
         if (PAGE(e) >= _spar.size()) {
             _spar.resize(PAGE(e) + 1);
         }
-        _spar[PAGE(e)].insert_at(e, _dense.size());
+        _spar[PAGE(e)].insert_at(PAGE_INDEX(e), _dense.size());
         _dense.push_back(cmpt);
     }
 
