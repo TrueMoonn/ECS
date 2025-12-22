@@ -7,9 +7,10 @@
 
 #pragma once
 
+    #include <stdexcept>
     #include <utility>
-    #include <iostream>
     #include <vector>
+    #include <print>
 
     #include "ECS/Entity.hpp"
     #include "ECS/SparseArray.hpp"
@@ -55,8 +56,8 @@ class DenseSparseArray {
     void removeComponent(Entity e) {
         if (PAGE(e) < _spar.size() && PAGE_INDEX(e) < _spar[PAGE(e)].size() &&
             _spar[PAGE(e)][PAGE_INDEX(e)].has_value()) {
-            std::size_t del_index = _spar[PAGE(e)][PAGE_INDEX(e)].value();
             Entity back_e = getBackEntity();
+            std::size_t del_index = _spar[PAGE(e)][PAGE_INDEX(e)].value();
             std::swap(_dense[del_index], _dense.back());
             _spar[PAGE(e)][PAGE_INDEX(e)] = std::nullopt;
             _spar[PAGE(back_e)][PAGE_INDEX(back_e)] = del_index;
@@ -90,6 +91,9 @@ class DenseSparseArray {
                 }
             }
         }
+        // SHOULD NEVER HAPPEN;
+        std::println("something is off...");
+        return 0;
     }
 
     std::vector<Component> _dense;
