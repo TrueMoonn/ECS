@@ -10,7 +10,6 @@
     #include <utility>
     #include <iostream>
     #include <vector>
-    #include <print>
 
     #include "ECS/Entity.hpp"
     #include "ECS/SparseArray.hpp"
