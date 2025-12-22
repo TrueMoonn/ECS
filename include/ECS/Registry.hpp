@@ -56,40 +56,24 @@ class Registry {
 
     template <typename Component, typename... Args>
     void createComponent(Entity e, Args&&... args) {
-        try {
-            GET_DENSE_REF(_components).createComponent(
-                e, std::forward<Args>(args)...);
-        } catch (const std::bad_any_cast& e) {
-            std::cout << e.what() << std::endl;
-        }
+        GET_DENSE_REF(_components).createComponent(
+            e, std::forward<Args>(args)...);
     }
 
     template <typename Component>
     void addComponent(Entity e, const Component& c) {
-        try {
-            GET_DENSE_REF(_components).addComponent(e, c);
-        } catch (const std::bad_any_cast& e) {
-            std::cout << e.what() << std::endl;
-        }
-    }
+        GET_DENSE_REF(_components).addComponent(e, c);
+}
 
     template <typename Component>
     void addComponent(Entity e, Component&& c) {
-        try {
-            GET_DENSE_REF(_components).addComponent(
-                e, std::forward<Component>(c));
-        } catch (const std::bad_any_cast& e) {
-            std::cout << e.what() << std::endl;
-        }
+        GET_DENSE_REF(_components).addComponent(
+            e, std::forward<Component>(c));
     }
 
     template <typename Component>
     void removeComponent(Entity e) {
-        try {
-            GET_DENSE_REF(_components).removeComponent(e);
-        } catch (const std::bad_any_cast& e) {
-            std::cout << e.what() << std::endl;
-        }
+        GET_DENSE_REF(_components).removeComponent(e);
     }
 
  private:

@@ -84,13 +84,15 @@ TEST(dense_zipper, hard_indexed_dense_zipper) {
 }
 
 TEST(dense_zipper, update_indexed_dense_zipper) {
-    // SIMPLE_SETUP
-    // int index_found = 0;
-    // for (auto &&[i, in, ch] : ECS::IndexedDenseZipper(ints, chars)) {
-    //     in += 1;
-    //     ch += 1;
-    //     index_found = i;
-    // }
-    // EXPECT_EQ(ints[index_found], index_found + 1);
-    // EXPECT_EQ(chars[index_found], index_found + '0' + 1);
+    SIMPLE_SETUP
+    std::size_t index_found = 0;
+    for (auto &&[i, in, ch] : ECS::IndexedDenseZipper(ints, chars)) {
+        in += 1;
+        ch += 1;
+        index_found = i;
+    }
+    EXPECT_EQ(ints.getComponent(ints.getSpar()[PAGE(index_found)]
+        [PAGE_INDEX(index_found)].value()), index_found + 1);
+    EXPECT_EQ(chars.getComponent(chars.getSpar()[PAGE(index_found)]
+        [PAGE_INDEX(index_found)].value()), index_found + '0' + 1);
 }

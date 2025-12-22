@@ -35,11 +35,29 @@ TEST(registry, register_component) {
 TEST(registry, create_component) {
     ECS::Registry reg = {};
     auto& integers = reg.registerComponent<int>();
+    int thousen = 1000;
 
     reg.createComponent<int>(0, 1);
     EXPECT_TRUE(integers.getSpar()[0][0].has_value());
     EXPECT_EQ(integers.getSpar()[0][0].value(), 0);
     EXPECT_EQ(integers.getComponent(0), 1);
+    reg.addComponent<int>(1, 2);
+    EXPECT_TRUE(integers.getSpar()[0][1].has_value());
+    EXPECT_EQ(integers.getSpar()[0][1].value(), 1);
+    EXPECT_EQ(integers.getComponent(1), 2);
+    reg.addComponent<int>(1000, thousen);
+    EXPECT_TRUE(integers.getSpar()[1][0].has_value());
+    EXPECT_EQ(integers.getSpar()[1][0].value(), 2);
+    EXPECT_EQ(integers.getComponent(2), 1000);
+}
+
+TEST(registry, bad_create_component) {
+    ECS::Registry reg = {};
+    int third = 3;
+
+    EXPECT_THROW(reg.createComponent<int>(0, 1), std::out_of_range);
+    EXPECT_THROW(reg.addComponent<int>(1, 2), std::out_of_range);
+    EXPECT_THROW(reg.addComponent<int>(2, third), std::out_of_range);
 }
 
 TEST(registry, access_component) {
@@ -56,14 +74,24 @@ TEST(registry, access_component) {
     EXPECT_EQ(integers.getComponent(1), 3);
 }
 
-TEST(registry, remove_entity) {
+TEST(registry, bad_access_component) {
+    ECS::Registry reg = {};
+    auto& integers = reg.registerComponent<int>();
+
+    EXPECT_THROW(reg.getComponents<char>(), std::out_of_range);
+}
+
+TEST(registry, remove_entity_components) {
     ECS::Registry reg = {};
     auto& integers = reg.registerComponent<int>();
 
     reg.addComponent<int>(0, 1);
     reg.addComponent<int>(1, 2);
+    reg.addComponent<int>(2, 3);
     reg.killEntity(0);
+    reg.removeComponent<int>(2);
     EXPECT_FALSE(integers.getSpar()[0][0].has_value());
+    EXPECT_FALSE(integers.getSpar()[0][2].has_value());
     EXPECT_EQ(integers.getComponent(integers.getSpar()[0][1].value()), 2);
 }
 
