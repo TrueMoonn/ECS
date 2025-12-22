@@ -49,3 +49,48 @@ TEST(dense_zipper, hard_dense_zipper) {
     }
     EXPECT_EQ(nbi, 3);
 }
+
+TEST(dense_zipper, simple_indexed_dense_zipper) {
+    SIMPLE_SETUP
+    int nbi = 0;
+    for (auto &&[i, in, ch] : ECS::IndexedDenseZipper(ints, chars)) {
+        EXPECT_EQ(in, 1);
+        EXPECT_EQ(ch, '1');
+        EXPECT_EQ(i, 1);
+        nbi += 1;
+    }
+    EXPECT_EQ(nbi, 1);
+}
+
+TEST(dense_zipper, hard_indexed_dense_zipper) {
+    HARD_SETUP
+    int nbi = 0;
+    for (auto &&[i, in, ch] : ECS::IndexedDenseZipper(ints, chars)) {
+        if (i == 1) {
+            EXPECT_EQ(in, 1);
+            EXPECT_EQ(ch, '1');
+        }
+        if (i == 3) {
+            EXPECT_EQ(in, 3);
+            EXPECT_EQ(ch, '3');
+        }
+        if (i == 6) {
+            EXPECT_EQ(in, 6);
+            EXPECT_EQ(ch, '6');
+        }
+        nbi += 1;
+    }
+    EXPECT_EQ(nbi, 3);
+}
+
+TEST(dense_zipper, update_indexed_dense_zipper) {
+    // SIMPLE_SETUP
+    // int index_found = 0;
+    // for (auto &&[i, in, ch] : ECS::IndexedDenseZipper(ints, chars)) {
+    //     in += 1;
+    //     ch += 1;
+    //     index_found = i;
+    // }
+    // EXPECT_EQ(ints[index_found], index_found + 1);
+    // EXPECT_EQ(chars[index_found], index_found + '0' + 1);
+}

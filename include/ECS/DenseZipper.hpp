@@ -13,6 +13,8 @@
     #include <cstddef>
     #include <iterator>
 
+    #include "ECS/DenseSA.hpp"
+
 namespace ECS {
 
 template <class... Containers>
@@ -144,6 +146,56 @@ class DenseZipper {
  private:
     std::tuple<Containers*...> _currents;
     size_t _size;
+};
+
+template <class... Containers>
+class IndexedDenseZipper {
+ public:
+    class Iterator {
+     public:
+        using inner_iterator = typename DenseZipper<Containers...>::iterator;
+        using value_type = std::tuple<size_t,
+            typename inner_iterator::value_type>;
+        using reference = value_type;
+
+        explicit Iterator(inner_iterator it) : _it(it) {}
+
+        Iterator& operator++() {
+            ++_it;
+            return *this;
+        }
+        Iterator operator++(int) {
+            auto prev = *this;
+            ++(*this);
+            return prev;
+        }
+        auto operator*() {
+            return std::tuple_cat(std::make_tuple(
+                MAX_PAGE_SIZE * _it.get_page() + _it.get_index()), *_it);
+        }
+        bool operator==(Iterator const& other) const {
+            return _it == other._it;
+        }
+        bool operator!=(Iterator const& other) const {
+            return !(*this == other);
+        }
+
+     private:
+        inner_iterator _it;
+    };
+
+    explicit IndexedDenseZipper(Containers&... cs) : _zipper(cs...) {}
+
+    Iterator begin() {
+        return Iterator(_zipper.begin());
+    }
+
+    Iterator end() {
+        return Iterator(_zipper.end());
+    }
+
+ private:
+    DenseZipper<Containers...> _zipper;
 };
 
 }  // namespace ECS
