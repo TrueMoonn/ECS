@@ -8,6 +8,7 @@
 #pragma once
 
     #include <utility>
+    #include <iostream>
     #include <vector>
     #include <print>
 
@@ -91,7 +92,7 @@ class DenseSparseArray {
             }
         }
         // SHOULD NEVER HAPPEN;
-        std::println("something is off...");
+        std::cout << "something is off...\n";
         return 0;
     }
 
