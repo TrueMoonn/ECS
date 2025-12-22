@@ -1,20 +1,17 @@
 name: Update parent repository
 
 on:
-  pull_request:
-    branches: 
+  push:
+    branches:
       - main
-    types:
-      - closed
 
 jobs:
   update:
     name: Update Submodule
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged
     steps:
       - uses: actions/checkout@v4
-        with: 
+        with:
           repository: TrueMoonn/TrueEngine
           token: ${{ secrets.SUBMODULE_PRIVATE_TOKEN }}
           submodules: true
