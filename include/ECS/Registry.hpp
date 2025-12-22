@@ -3,7 +3,6 @@
 ** ECS
 ** File description:
 ** Registry.hpp
-** Copyright [2025] <DeepestDungeonGroup>
 */
 
 #pragma once

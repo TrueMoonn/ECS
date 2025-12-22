@@ -3,7 +3,6 @@
 ** ECS
 ** File description:
 ** Registry.cpp
-** Copyright [2025] <DeepestDungeonGroup>
 */
 
 #include "ECS/Registry.hpp"

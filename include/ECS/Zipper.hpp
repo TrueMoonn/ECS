@@ -3,7 +3,6 @@
 ** ECS
 ** File description:
 ** Zipper.hpp
-** Copyright [2025] <DeepestDungeonGroup>
 */
 
 #pragma once
