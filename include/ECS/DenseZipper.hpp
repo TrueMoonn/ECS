@@ -3,7 +3,6 @@
 ** ECS
 ** File description:
 ** DenseZipper.hpp
-** Copyright [2025] <DeepestDungeonGroup>
 */
 
 #pragma once

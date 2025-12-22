@@ -3,7 +3,6 @@
 ** ECS
 ** File description:
 ** registry.cpp
-** Copyright [2025] <DeepestDungeonGroup>
 */
 
 #include <gtest/gtest.h>
