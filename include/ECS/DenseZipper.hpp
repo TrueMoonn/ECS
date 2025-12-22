@@ -13,8 +13,6 @@
     #include <cstddef>
     #include <iterator>
 
-    #include "DenseSA.hpp"
-
 namespace ECS {
 
 template <class... Containers>
@@ -78,7 +76,7 @@ class DenseZipper {
      private:
         void incr_all() {
             auto& fcontainer = *std::get<0>(_currents);
-            auto& fspar = fcontainer.getSparComponents();
+            auto& fspar = fcontainer.getSpar();
 
             ++_idx;
             while (_page < fspar.size()) {
@@ -107,7 +105,7 @@ class DenseZipper {
         template <size_t I>
         bool has_component() {
             auto& container = *std::get<I>(_currents);
-            auto& spar = container.getSparComponents();
+            auto& spar = container.getSpar();
 
             return _page < spar.size() &&
                     _idx < spar[_page].size() &&
@@ -117,7 +115,7 @@ class DenseZipper {
         template <size_t I>
         auto& get_component() {
             auto& container = *std::get<I>(_currents);
-            auto& spar = container.getSparComponents();
+            auto& spar = container.getSpar();
             size_t dense_idx = spar[_page][_idx].value();
             return container.getComponent(dense_idx);
         }
@@ -139,7 +137,7 @@ class DenseZipper {
     }
     iterator end() {
         auto& first_container = *std::get<0>(_currents);
-        size_t max_page = first_container.getSparComponents().size();
+        size_t max_page = first_container.getSpar().size();
         return iterator(_currents, max_page, 0);
     }
 

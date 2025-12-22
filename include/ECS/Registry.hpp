@@ -30,37 +30,15 @@ class Registry {
     DenseSparseArray<Component>& registerComponent() {
         _components.insert_or_assign(
             std::type_index(typeid(Component)), DenseSparseArray<Component>());
-        // _remover.push_back([](Registry& reg, Entity e) {
-        //     auto &cmpts = reg.getComponents<Component>();
-        //     if (e < cmpts.size() && cmpts[e].has_value())
-        //         cmpts.erase(e);
-        // });
+        _remover.push_back([](Registry& reg, Entity e) {
+            reg.getComponents<Component>().removeComponent(e);
+        });
         return GET_DENSE_REF(_components);
     }
 
     template <typename Component>
     DenseSparseArray<Component>& getComponents() {
         return GET_DENSE_REF(_components);
-    }
-
-    template <typename Component>
-    std::vector<SparseArray<std::size_t>>& getSparComponents() {
-        return GET_DENSE_REF(_components).getSparComponents();
-    }
-
-    template <typename Component>
-    const std::vector<SparseArray<std::size_t>>& getSparComponents() const {
-        return GET_DENSE_REF(_components).getSparComponents();
-    }
-
-    template <typename Component>
-    Component& getComponent(std::size_t index) {
-        return GET_DENSE_REF(_components).getComponent(index);
-    }
-
-    template <typename Component>
-    const Component& getComponent(std::size_t index) const {
-        return GET_DENSE_REF(_components).getComponent(index);
     }
 
     template <typename Component>

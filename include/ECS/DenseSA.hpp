@@ -8,6 +8,7 @@
 #pragma once
 
     #include <utility>
+    #include <iostream>
     #include <vector>
 
     #include "ECS/Entity.hpp"
@@ -55,18 +56,19 @@ class DenseSparseArray {
         if (PAGE(e) < _spar.size() && PAGE_INDEX(e) < _spar[PAGE(e)].size() &&
             _spar[PAGE(e)][PAGE_INDEX(e)].has_value()) {
             std::size_t del_index = _spar[PAGE(e)][PAGE_INDEX(e)].value();
-            // Entity backEntity = getBackEntity();
+            Entity back_e = getBackEntity();
             std::swap(_dense[del_index], _dense.back());
             _spar[PAGE(e)][PAGE_INDEX(e)] = std::nullopt;
+            _spar[PAGE(back_e)][PAGE_INDEX(back_e)] = del_index;
             _dense.pop_back();
         }
     }
 
-    std::vector<SparseArray<std::size_t>>& getSparComponents() {
+    std::vector<SparseArray<std::size_t>>& getSpar() {
         return _spar;
     }
 
-    const std::vector<SparseArray<std::size_t>>& getSparComponents() const {
+    const std::vector<SparseArray<std::size_t>>& getSpar() const {
         return _spar;
     }
 
@@ -79,6 +81,17 @@ class DenseSparseArray {
     }
 
  private:
+    Entity getBackEntity() {
+        for (std::size_t page = 0; page < _spar.size(); ++page) {
+            for (std::size_t idx = 0; idx < _spar[page].size(); ++idx) {
+                if (_spar[page][idx].has_value() &&
+                    _spar[page][idx].value() == _dense.size() - 1) {
+                    return page * MAX_PAGE_SIZE + idx;
+                }
+            }
+        }
+    }
+
     std::vector<Component> _dense;
     std::vector<SparseArray<std::size_t>> _spar;
 };
