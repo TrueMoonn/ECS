@@ -8,12 +8,10 @@
 
 #pragma once
 
-    #include <iostream>
     #include <tuple>
     #include <utility>
     #include <cstddef>
     #include <iterator>
-    #include <algorithm>
 
     #include "DenseSA.hpp"
 
@@ -34,9 +32,9 @@ class DenseZipper {
         using difference_type = std::ptrdiff_t;
         using iterator_category = std::forward_iterator_tag;
 
-        DenseZipIt(std::tuple<Cs*...> containers, size_t max, size_t idx = 0)
-            : _currents(containers), _max(max), _idx(idx) {
-            if (_idx < _max && !all_set(_seq)) {
+        DenseZipIt(std::tuple<Cs*...> containers, size_t page, size_t idx = 0) :
+            _currents(containers), _page(page), _idx(idx), _is_end(false) {
+            if (!_is_end && !all_set(_seq)) {
                 incr_all();
             }
         }
@@ -60,12 +58,18 @@ class DenseZipper {
 
         friend bool operator==(const DenseZipIt& lhs,
             const DenseZipIt& rhs) {
-            return lhs._idx == rhs._idx;
+                return lhs._is_end == rhs._is_end &&
+                    (lhs._is_end ||
+                    (lhs._page == rhs._page && lhs._idx == rhs._idx));
         }
         friend bool operator!=(const DenseZipIt& lhs,
             const DenseZipIt& rhs) {
             return !(lhs == rhs);
         }
+
+        size_t get_page() const {
+            return _page;
+        };
 
         size_t get_index() const {
             return _idx;
@@ -73,9 +77,21 @@ class DenseZipper {
 
      private:
         void incr_all() {
-            do {
-                ++_idx;
-            } while (_idx < _max && !all_set(_seq));
+            auto& fcontainer = *std::get<0>(_currents);
+            auto& fspar = fcontainer.getSparComponents();
+
+            ++_idx;
+            while (_page < fspar.size()) {
+                while (_idx < fspar[_page].size()) {
+                    if (fspar[_page][_idx].has_value() && all_set(_seq)) {
+                        return;
+                    }
+                    ++_idx;
+                }
+                ++_page;
+                _idx = 0;
+            }
+            _is_end = true;
         }
 
         template <size_t... Is>
@@ -92,50 +108,42 @@ class DenseZipper {
         bool has_component() {
             auto& container = *std::get<I>(_currents);
             auto& spar = container.getSparComponents();
-            size_t page = PAGE(_idx);
-            size_t page_idx = PAGE_INDEX(_idx);
 
-            return page < spar.size() &&
-                    page_idx < spar[page].size() &&
-                    spar[page][page_idx].has_value();
+            return _page < spar.size() &&
+                    _idx < spar[_page].size() &&
+                    spar[_page][_idx].has_value();
         }
 
         template <size_t I>
         auto& get_component() {
             auto& container = *std::get<I>(_currents);
             auto& spar = container.getSparComponents();
-            size_t page = PAGE(_idx);
-            size_t page_idx = PAGE_INDEX(_idx);
-            size_t dense_idx = spar[page][page_idx].value();
+            size_t dense_idx = spar[_page][_idx].value();
             return container.getComponent(dense_idx);
         }
 
         std::tuple<Cs*...> _currents;
-        size_t _max;
+        size_t _page;
         size_t _idx;
+        bool _is_end;
         static constexpr std::index_sequence_for<Cs...> _seq{};
     };
 
     using iterator = DenseZipIt<Containers...>;
 
     explicit DenseZipper(Containers&... cs) :
-        _currents(std::make_tuple(&cs...)),
-        _size(_compute_size(cs...)) {}
+        _currents(std::make_tuple(&cs...)) {}
 
     iterator begin() {
-        return iterator(_currents, _size, 0);
+        return iterator(_currents, 0, 0);
     }
     iterator end() {
-        return iterator(_currents, _size, _size);
+        auto& first_container = *std::get<0>(_currents);
+        size_t max_page = first_container.getSparComponents().size();
+        return iterator(_currents, max_page, 0);
     }
 
  private:
-    static size_t _compute_size(Containers&... containers) {
-        return std::max({
-            (containers.getSparComponents().size() * MAX_PAGE_SIZE)...
-        });
-    }
-
     std::tuple<Containers*...> _currents;
     size_t _size;
 };
