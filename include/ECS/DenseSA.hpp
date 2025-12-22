@@ -20,6 +20,9 @@ namespace ECS {
 #define PAGE(e) e / MAX_PAGE_SIZE
 #define PAGE_INDEX(e) e % MAX_PAGE_SIZE
 
+#define GET_ENTITY_CMPT(dsa, e) dsa.getComponent(\
+    dsa.getSpar()[PAGE(e)][PAGE_INDEX(e)].value());
+
 template <typename Component>
 class DenseSparseArray {
  public:

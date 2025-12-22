@@ -3,7 +3,6 @@
 ** ECS
 ** File description:
 ** sparse_array.cpp
-** Copyright [2025] <DeepestDungeonGroup>
 */
 
 #include <gtest/gtest.h>
@@ -67,4 +66,3 @@ TEST(sparse_array, eraser) {
     arr.erase(0);
     EXPECT_FALSE(arr[0].has_value());
 }
-
