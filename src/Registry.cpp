@@ -10,7 +10,7 @@
 
 namespace ECS {
 
-void Registry::killEntity(const Entity& e) {
+void Registry::killEntity(Entity e) {
     for (auto& rm : _remover)
         rm(*this, e);
 }
@@ -21,4 +21,3 @@ void Registry::runSystems(void) {
 }
 
 }  // namespace ECS
-
