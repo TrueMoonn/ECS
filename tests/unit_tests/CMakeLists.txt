@@ -8,14 +8,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-add_executable(${PROJECT_NAME} 
+add_executable(${PROJECT_NAME}
     sparse_array.cpp
     registry.cpp
     zipper.cpp
+    dense_zipper.cpp
 )
 
-target_link_libraries(${PROJECT_NAME} 
-    PRIVATE 
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
         ECS
         GTest::gtest_main
 )
