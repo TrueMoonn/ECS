@@ -69,7 +69,7 @@ class DenseZipper {
 
         size_t get_page() const {
             return _page;
-        };
+        }
 
         size_t get_index() const {
             return _idx;

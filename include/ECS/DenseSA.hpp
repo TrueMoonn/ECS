@@ -15,9 +15,9 @@
 
 namespace ECS {
 
-    #define MAX_PAGE_SIZE 1000
-    #define PAGE(e) e / MAX_PAGE_SIZE
-    #define PAGE_INDEX(e) e % MAX_PAGE_SIZE
+#define MAX_PAGE_SIZE 1000
+#define PAGE(e) e / MAX_PAGE_SIZE
+#define PAGE_INDEX(e) e % MAX_PAGE_SIZE
 
 template <typename Component>
 class DenseSparseArray {
