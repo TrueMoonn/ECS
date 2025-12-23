@@ -56,15 +56,19 @@ class DenseSparseArray {
     }
 
     void removeComponent(Entity e) {
-        if (PAGE(e) < _spar.size() && PAGE_INDEX(e) < _spar[PAGE(e)].size() &&
-            _spar[PAGE(e)][PAGE_INDEX(e)].has_value()) {
-            Entity back_e = getBackEntity();
-            std::size_t del_index = _spar[PAGE(e)][PAGE_INDEX(e)].value();
-            std::swap(_dense[del_index], _dense.back());
-            _spar[PAGE(e)][PAGE_INDEX(e)] = std::nullopt;
-            _spar[PAGE(back_e)][PAGE_INDEX(back_e)] = del_index;
-            _dense.pop_back();
+        if (PAGE(e) >= _spar.size() ||
+            PAGE_INDEX(e) >= _spar[PAGE(e)].size() ||
+            !_spar[PAGE(e)][PAGE_INDEX(e)].has_value()) {
+            return;
         }
+        Entity back_e = getBackEntity();
+        std::size_t del_index = _spar[PAGE(e)][PAGE_INDEX(e)].value();
+        if (del_index != _dense.size() - 1) {
+            std::swap(_dense[del_index], _dense.back());
+            _spar[PAGE(back_e)][PAGE_INDEX(back_e)] = del_index;
+        }
+        _spar[PAGE(e)][PAGE_INDEX(e)] = std::nullopt;
+        _dense.pop_back();
     }
 
     std::vector<SparseArray<std::size_t>>& getSpar() {
