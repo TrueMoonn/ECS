@@ -55,12 +55,15 @@ class DenseSparseArray {
         _dense.push_back(cmpt);
     }
 
+    bool hasComponent(Entity e) {
+        return (PAGE(e) < _spar.size() &&
+            PAGE_INDEX(e) <_spar[PAGE(e)].size() &&
+            _spar[PAGE(e)][PAGE_INDEX(e)].has_value());
+    }
+
     void removeComponent(Entity e) {
-        if (PAGE(e) >= _spar.size() ||
-            PAGE_INDEX(e) >= _spar[PAGE(e)].size() ||
-            !_spar[PAGE(e)][PAGE_INDEX(e)].has_value()) {
+        if (!hasComponent(e))
             return;
-        }
         Entity back_e = getBackEntity();
         std::size_t del_index = _spar[PAGE(e)][PAGE_INDEX(e)].value();
         if (del_index != _dense.size() - 1) {
