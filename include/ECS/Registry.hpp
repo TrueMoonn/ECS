@@ -79,7 +79,8 @@ class Registry {
     std::unordered_map<std::type_index, std::any> _components;
     std::vector<std::function<void(Registry&, const Entity&)>> _remover;
 
-    std::unordered_map<std::string, std::function<void(Registry&)>> _systems;
+    std::vector<std::pair<
+        std::string, std::function<void(Registry&)>>> _systems;
 };
 
 }  // namespace ECS
