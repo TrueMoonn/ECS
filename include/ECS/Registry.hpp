@@ -44,8 +44,9 @@ class Registry {
         return GET_DENSE_REF(_components);
     }
 
-    void addSystem(const std::function<void(Registry&)>& f) {
-        _systems.push_back(f);
+    void addSystem(const std::string& name,
+        const std::function<void(Registry&)>& f) {
+        _systems.insert_or_assign(name, f);
     }
 
     void runSystems(void);
@@ -78,7 +79,7 @@ class Registry {
     std::unordered_map<std::type_index, std::any> _components;
     std::vector<std::function<void(Registry&, const Entity&)>> _remover;
 
-    std::vector<std::function<void(Registry&)>> _systems;
+    std::unordered_map<std::string, std::function<void(Registry&)>> _systems;
 };
 
 }  // namespace ECS

@@ -15,7 +15,7 @@ void Registry::killEntity(Entity e) {
 }
 
 void Registry::runSystems(void) {
-    for (const auto& sys : _systems)
+    for (const auto& [name, sys] : _systems)
         sys(*this);
 }
 
