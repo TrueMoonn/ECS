@@ -19,23 +19,23 @@ void Registry::runSystems(void) {
         sys(*this);
 }
 
-void addSystem(const std::string& name,
+void Registry::addSystem(const std::string& name,
     const std::function<void(Registry&)>& f) {
     _systems.emplace_back(name, f);
 }
 
-int getSystem(const std::string& name) {
-    for (int i = 0; i < _systems; ++i)
-        if (!name.compare(_systems[i].second))
+int Registry::getSystem(const std::string& name) {
+    for (int i = 0; i < _systems.size(); ++i)
+        if (!name.compare(_systems[i].first))
             return i;
     return -1;
 }
 
-void removeSystem(const std::string& name) {
+void Registry::removeSystem(const std::string& name) {
     auto idx = getSystem(name);
     if (idx < 0)
         return;
-    std::erease(_systems, _systems[idx]);
+    _systems.erase(_systems.begin() + idx);
 }
 
 }  // namespace ECS
