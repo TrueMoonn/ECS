@@ -45,10 +45,9 @@ class Registry {
     }
 
     void addSystem(const std::string& name,
-        const std::function<void(Registry&)>& f) {
-        _systems.emplace_back(name, f);
-    }
-
+        const std::function<void(Registry&)>& f);
+    int getSystem(const std::string& name);
+    void removeSystem(const std::string& name);
     void runSystems(void);
 
     void killEntity(Entity e);
