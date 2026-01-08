@@ -46,7 +46,7 @@ class Registry {
 
     void addSystem(const std::string& name,
         const std::function<void(Registry&)>& f) {
-        _systems.insert_or_assign(name, f);
+        _systems.emplace_back(name, f);
     }
 
     void runSystems(void);
