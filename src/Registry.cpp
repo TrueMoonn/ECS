@@ -31,6 +31,10 @@ int Registry::getSystem(const std::string& name) {
     return -1;
 }
 
+void Registry::clearSystems(void) {
+    _systems.clear();
+}
+
 void Registry::removeSystem(const std::string& name) {
     auto idx = getSystem(name);
     if (idx < 0)

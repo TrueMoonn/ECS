@@ -48,6 +48,7 @@ class Registry {
         const std::function<void(Registry&)>& f);
     int getSystem(const std::string& name);
     void removeSystem(const std::string& name);
+    void clearSystems(void);
     void runSystems(void);
 
     void killEntity(Entity e);
