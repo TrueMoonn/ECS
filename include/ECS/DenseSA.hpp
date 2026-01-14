@@ -20,9 +20,6 @@ namespace ECS {
 #define PAGE(e) e / MAX_PAGE_SIZE
 #define PAGE_INDEX(e) e % MAX_PAGE_SIZE
 
-#define GET_ENTITY_CMPT(dsa, e) dsa.getComponent(\
-    dsa.getSpar()[PAGE(e)][PAGE_INDEX(e)].value())
-
 template <typename Component>
 class DenseSparseArray {
  public:
@@ -82,12 +79,12 @@ class DenseSparseArray {
         return _spar;
     }
 
-    Component& getComponent(std::size_t index) {
-        return _dense[index];
+    Component& getComponent(Entity e) {
+        return _dense.at(_spar[PAGE(e)][PAGE_INDEX(e)].value());
     }
 
-    const Component& getComponent(std::size_t index) const {
-        return _dense[index];
+    const Component& getComponent(Entity e) const {
+        return _dense.at(_spar[PAGE(e)][PAGE_INDEX(e)].value());
     }
 
  private:
