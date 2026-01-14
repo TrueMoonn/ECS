@@ -118,7 +118,7 @@ class DenseZipper {
             auto& container = *std::get<I>(_currents);
             auto& spar = container.getSpar();
             size_t dense_idx = spar[_page][_idx].value();
-            return container.getComponent(dense_idx);
+            return container.getComponentDense(dense_idx);
         }
 
         std::tuple<Cs*...> _currents;

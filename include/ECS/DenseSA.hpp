@@ -79,12 +79,20 @@ class DenseSparseArray {
         return _spar;
     }
 
+    Component& getComponentDense(std::size_t idx) {
+        return _dense[idx];
+    }
+
+    const Component& getComponentDense(std::size_t idx) const {
+        return _dense[idx];
+    }
+
     Component& getComponent(Entity e) {
-        return _dense.at(_spar[PAGE(e)][PAGE_INDEX(e)].value());
+        return _dense[_spar[PAGE(e)][PAGE_INDEX(e)].value()];
     }
 
     const Component& getComponent(Entity e) const {
-        return _dense.at(_spar[PAGE(e)][PAGE_INDEX(e)].value());
+        return _dense[_spar[PAGE(e)][PAGE_INDEX(e)].value()];
     }
 
  private:
