@@ -34,6 +34,7 @@ class DenseSparseArray {
         }
         _spar[PAGE(e)].insert_at(PAGE_INDEX(e), _dense.size());
         _dense.emplace_back(std::forward<Args>(args)...);
+        _dense_to_entity.push_back(e);
     }
 
     void addComponent(Entity e, Component&& cmpt) {
@@ -42,6 +43,7 @@ class DenseSparseArray {
         }
         _spar[PAGE(e)].insert_at(PAGE_INDEX(e), _dense.size());
         _dense.push_back(std::forward<Component>(cmpt));
+        _dense_to_entity.push_back(e);
     }
 
     void addComponent(Entity e, const Component& cmpt) {
@@ -50,6 +52,7 @@ class DenseSparseArray {
         }
         _spar[PAGE(e)].insert_at(PAGE_INDEX(e), _dense.size());
         _dense.push_back(cmpt);
+        _dense_to_entity.push_back(e);
     }
 
     bool hasComponent(Entity e) {
@@ -61,14 +64,16 @@ class DenseSparseArray {
     void removeComponent(Entity e) {
         if (!hasComponent(e))
             return;
-        Entity back_e = getBackEntity();
         std::size_t del_index = _spar[PAGE(e)][PAGE_INDEX(e)].value();
+        Entity back_e = _dense_to_entity.back();
         if (del_index != _dense.size() - 1) {
             std::swap(_dense[del_index], _dense.back());
+            std::swap(_dense_to_entity[del_index], _dense_to_entity.back());
             _spar[PAGE(back_e)][PAGE_INDEX(back_e)] = del_index;
         }
         _spar[PAGE(e)][PAGE_INDEX(e)] = std::nullopt;
         _dense.pop_back();
+        _dense_to_entity.pop_back();
     }
 
     std::vector<SparseArray<std::size_t>>& getSpar() {
@@ -96,21 +101,9 @@ class DenseSparseArray {
     }
 
  private:
-    Entity getBackEntity() {
-        for (std::size_t page = 0; page < _spar.size(); ++page) {
-            for (std::size_t idx = 0; idx < _spar[page].size(); ++idx) {
-                if (_spar[page][idx].has_value() &&
-                    _spar[page][idx].value() == _dense.size() - 1) {
-                    return page * MAX_PAGE_SIZE + idx;
-                }
-            }
-        }
-        // SHOULD NEVER HAPPEN;
-        std::cout << "something is off...\n";
-        return 0;
-    }
 
     std::vector<Component> _dense;
+    std::vector<Entity> _dense_to_entity;
     std::vector<SparseArray<std::size_t>> _spar;
 };
 
