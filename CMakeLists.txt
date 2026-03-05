@@ -20,12 +20,12 @@ if(ENABLE_ECS_COVERAGE)
 endif()
 
 if (ENABLE_ECS_TESTS)
-  enable_testing()
-  add_subdirectory(tests/unit_tests)
+    enable_testing()
+    add_subdirectory(tests/unit_tests)
 endif ()
 
 ########## ECS ##########
-add_library( ${PROJECT_NAME} STATIC
+add_library(${PROJECT_NAME} STATIC
     ${ECS_SRC_DIR}Registry.cpp
 )
 
