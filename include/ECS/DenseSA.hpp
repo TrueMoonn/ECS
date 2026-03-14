@@ -101,7 +101,6 @@ class DenseSparseArray {
     }
 
  private:
-
     std::vector<Component> _dense;
     std::vector<Entity> _dense_to_entity;
     std::vector<SparseArray<std::size_t>> _spar;
