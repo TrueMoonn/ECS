@@ -5,6 +5,7 @@
 ** Registry.cpp
 */
 
+#include <string>
 #include "ECS/Registry.hpp"
 
 namespace ECS {

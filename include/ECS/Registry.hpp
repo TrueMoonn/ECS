@@ -13,6 +13,7 @@
     #include <any>
     #include <vector>
     #include <utility>
+    #include <string>
 
     #include "ECS/DenseSA.hpp"
     #include "ECS/Entity.hpp"
